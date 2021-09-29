@@ -2,7 +2,7 @@ package com.example.tmdbclient.domain
 
 import com.example.tmdbclient.data.model.artist.Artist
 
-class UpdateArtistsUseCase(private val artistInterface: ArtistInterface) {
+class UpdateArtistsUseCase(private val artistRepository: ArtistRepository) {
 
-    suspend fun execute(): List<Artist>? = artistInterface.updateArtists()
+    suspend fun execute(): List<Artist>? = artistRepository.updateArtists()
 }

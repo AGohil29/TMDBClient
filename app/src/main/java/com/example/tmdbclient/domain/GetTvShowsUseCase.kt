@@ -2,7 +2,7 @@ package com.example.tmdbclient.domain
 
 import com.example.tmdbclient.data.model.tvshow.TVShow
 
-class GetTvShowsUseCase(private val tvShowInterface: TvShowInterface) {
+class GetTvShowsUseCase(private val tvShowRepository: TvShowRepository) {
 
-    suspend fun execute(): List<TVShow>? = tvShowInterface.getTvShows()
+    suspend fun execute(): List<TVShow>? = tvShowRepository.getTvShows()
 }
