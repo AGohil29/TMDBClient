@@ -1,15 +1,20 @@
 package com.example.tmdbclient.presentation.movie
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tmdbclient.R
 import com.example.tmdbclient.databinding.ActivityMovieBinding
 import com.example.tmdbclient.presentation.di.Injector
+import java.util.zip.Inflater
 import javax.inject.Inject
 
 class MovieActivity : AppCompatActivity() {
@@ -49,6 +54,36 @@ class MovieActivity : AppCompatActivity() {
             } else {
                 binding.movieProgressBar.visibility = View.GONE
                 Toast.makeText(applicationContext, "No Data Available", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater : MenuInflater = menuInflater
+        inflater.inflate(R.menu.update, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_update -> {
+                updateMovies()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun updateMovies() {
+        binding.movieProgressBar.visibility = View.VISIBLE
+        val response = movieViewModel.updateMovies()
+        response.observe(this, Observer {
+            if (it != null) {
+                adapter.setList(it)
+                adapter.notifyDataSetChanged()
+                binding.movieProgressBar.visibility = View.GONE
+            } else {
+                binding.movieProgressBar.visibility = View.GONE
             }
         })
     }
